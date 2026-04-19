@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cognitive Load & Smart Wellness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <header>
+            <h1 class="glow-text">AI Cognitive Load Detection</h1>
+            <p class="subtitle">Smart Wellness & Context-Aware Alerts</p>
+        </header>
+
+        <div class="mode-selector glass-panel">
+            <h3>Select Context Mode</h3>
+            <div class="mode-buttons">
+                <button class="mode-btn active" data-mode="Driving">Driving 🚗</button>
+                <button class="mode-btn" data-mode="Study">Study 📚</button>
+                <button class="mode-btn" data-mode="Work">Work 💼</button>
+                <button class="mode-btn" data-mode="Classroom">Classroom 🏫</button>
+                <button class="mode-btn" data-mode="OnlineMeeting">Online Meeting 🎧</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="video-container glass-panel">
+                <div class="video-wrapper">
+                    <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Webcam Feed">
+                </div>
+                <!-- Attention Failure Gallery -->
+                <div id="mistake-gallery-box" style="margin-top: 15px; text-align: center; max-height: 480px; overflow-y: auto; padding: 10px; background: rgba(255, 0, 0, 0.05); border-radius: 8px; border: 1px solid rgba(255, 77, 77, 0.2);">
+                    <h4 style="color: #ff4d4d; margin-bottom: 10px; font-family: 'Orbitron', sans-serif;">Mistake Captures History</h4>
+                    <div id="mistake-images" style="display: flex; flex-direction: column; gap: 15px;">
+                        <p id="no-mistakes-text" style="color: #fff; opacity: 0.5; font-size: 0.9em;">No mistakes captured yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-panel">
+                <div class="stat-box glass-panel" id="cognitive-load-box">
+                    <h3>Cognitive Load</h3>
+                    <div id="load-value" class="status-indicator">DETECTING...</div>
+                    <div class="metrics">
+                        <span>EAR: <strong id="ear-value">0.0</strong></span> | 
+                        <span>Blinks: <strong id="blink-value">0</strong> /min</span>
+                    </div>
+                </div>
+
+                <div class="stat-box glass-panel" style="margin-top: 15px;">
+                    <h3>Live Attention History</h3>
+                    <canvas id="liveAttentionChart" style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 5px; width: 100%; max-height: 150px;"></canvas>
+                </div>
+
+                <div class="alert-box glass-panel hidden" id="alert-box">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-message" id="alert-message">Status Normal</div>
+                </div>
+
+                <div class="suggestion-panel glass-panel">
+                    <h3>Smart Suggestions</h3>
+                    <ul id="suggestion-list">
+                        <li>Evaluating metrics... ⏳</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="session-panel glass-panel" style="margin-top: 20px; padding: 20px;">
+            <h3>Session Scheduler & Summary</h3>
+            <div style="display: flex; gap: 10px; margin-top: 15px; margin-bottom: 10px;">
+                <input type="number" id="session-duration" placeholder="Duration in minutes" min="1" max="180" style="flex: 1; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: #fff; outline: none; font-family: 'Orbitron', sans-serif;">
+                <button id="start-session-btn" class="mode-btn" style="flex: 1;">Start Session</button>
+            </div>
+            <div id="session-status" style="color: #00e5ff; font-size: 0.9em; margin-bottom: 15px; display: none;"></div>
+
+            <div id="session-summary-box" style="display: none; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 15px;">
+                <h4 style="color: #ffcc00; margin-bottom: 10px;">Session Analytics</h4>
+                <canvas id="sessionChart" style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; width: 100%; max-height: 250px;"></canvas>
+                
+                <div id="worst-frame-box" style="display: none; text-align: center; margin-top: 15px;">
+                    <h4 style="color: #ff4d4d; margin-bottom: 10px;">High Cognitive Load Detected</h4>
+                    <img id="worst-frame-img" src="" alt="Worst Frame" style="width: 100%; max-width: 350px; border-radius: 8px; border: 2px solid #ff4d4d;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio element for alerts -->
+    <audio id="alert-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

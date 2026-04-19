@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+
+:root {
+    --bg-color: #0b0c10;
+    --glass-bg: rgba(15, 20, 35, 0.7);
+    --glass-border: rgba(0, 255, 255, 0.3);
+    --primary-glow: #00e5ff;
+    --low-color: #00ff88;
+    --med-color: #ffcc00;
+    --high-color: #ff0055;
+    --text-main: #ffffff;
+    --text-muted: #a0c4ff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Rajdhani', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* FIX: prevent layer conflicts */
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* FIX: was -1 */
+}
+
+/* FIX: ensure UI always above background */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.glow-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8rem;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow), 0 0 40px var(--primary-glow);
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 229, 255, 0.3);
+}
+
+.mode-selector {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.mode-selector h3 {
+    margin-top: 0;
+    font-family: 'Orbitron';
+    color: var(--primary-glow);
+}
+
+.mode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid var(--primary-glow);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.mode-btn:hover,
+.mode-btn.active {
+    background: var(--primary-glow);
+    color: #000;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    gap: 25px;
+}
+
+@media(max-width: 900px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    transition: box-shadow 0.3s ease;
+}
+
+/* FIX: stabilize video rendering */
+#video-feed {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* FIX: control canvas overlay */
+canvas {
+    max-width: 100%;
+    display: block;
+}
+
+/* FIX: prevent media overflow globally */
+img,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.dashboard-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.stat-box h3 {
+    margin-top: 0;
+    font-family: 'Orbitron';
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.status-indicator {
+    font-family: 'Orbitron';
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.status-indicator.low {
+    color: var(--low-color);
+    text-shadow: 0 0 15px var(--low-color);
+}
+
+.status-indicator.medium {
+    color: var(--med-color);
+    text-shadow: 0 0 15px var(--med-color);
+}
+
+.status-indicator.high {
+    color: var(--high-color);
+    text-shadow: 0 0 20px var(--high-color), 0 0 40px var(--high-color);
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 10px var(--high-color);
+    }
+
+    100% {
+        transform: scale(1.05);
+        text-shadow: 0 0 25px var(--high-color), 0 0 50px var(--high-color);
+    }
+}
+
+.metrics {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+.alert-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 0, 85, 0.2);
+    border: 1px solid var(--high-color);
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+.alert-box.hidden {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+    pointer-events: none;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+}
+
+.alert-icon {
+    font-size: 2rem;
+    animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.alert-message {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--high-color);
+}
+
+.suggestion-panel h3 {
+    margin-top: 0;
+    font-family: 'Orbitron';
+    color: #00e5ff;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+#suggestion-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#suggestion-list li {
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e0e0e0;
+    transition: background 0.3s;
+}
+
+#suggestion-list li:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
